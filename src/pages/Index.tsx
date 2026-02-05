@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import OnboardingFlow from '@/components/OnboardingFlow';
 
 const Index = () => {
@@ -23,19 +22,7 @@ const Index = () => {
     { name: 'Протеиновый смузи', calories: 180, protein: 25, carbs: 15, fat: 3, category: 'Перекус' },
   ];
 
-  const workouts = [
-    { name: 'HIIT тренировка', duration: '30 мин', intensity: 'Высокая', calories: 350 },
-    { name: 'Йога для начинающих', duration: '45 мин', intensity: 'Низкая', calories: 150 },
-    { name: 'Силовая тренировка', duration: '60 мин', intensity: 'Средняя', calories: 280 },
-    { name: 'Кардио-бег', duration: '40 мин', intensity: 'Высокая', calories: 400 },
-  ];
 
-  const courses = Array.from({ length: 20 }, (_, i) => ({
-    id: i + 1,
-    title: `Курс ${i + 1}: ${['Жиросжигание', 'Набор массы', 'Рельеф', 'Выносливость', 'Растяжка'][i % 5]}`,
-    lessons: Math.floor(Math.random() * 15) + 10,
-    duration: `${Math.floor(Math.random() * 4) + 2} недели`,
-  }));
 
   const handleOnboardingComplete = (data: any) => {
     setUserData(data);
@@ -77,24 +64,15 @@ const Index = () => {
         </header>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid grid-cols-7 w-full bg-card/50 backdrop-blur-sm p-1">
+          <TabsList className="grid grid-cols-4 w-full bg-card/50 backdrop-blur-sm p-1">
             <TabsTrigger value="home" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-pink-500">
               <Icon name="Home" size={18} />
-            </TabsTrigger>
-            <TabsTrigger value="workouts" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-pink-500">
-              <Icon name="Dumbbell" size={18} />
             </TabsTrigger>
             <TabsTrigger value="nutrition" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-pink-500">
               <Icon name="Apple" size={18} />
             </TabsTrigger>
-            <TabsTrigger value="courses" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-pink-500">
-              <Icon name="BookOpen" size={18} />
-            </TabsTrigger>
             <TabsTrigger value="progress" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-pink-500">
               <Icon name="TrendingUp" size={18} />
-            </TabsTrigger>
-            <TabsTrigger value="coach" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-pink-500">
-              <Icon name="MessageCircle" size={18} />
             </TabsTrigger>
             <TabsTrigger value="profile" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-pink-500">
               <Icon name="Settings" size={18} />
@@ -167,39 +145,7 @@ const Index = () => {
             </Card>
           </TabsContent>
 
-          <TabsContent value="workouts" className="animate-fade-in">
-            <div className="grid md:grid-cols-2 gap-4">
-              {workouts.map((workout, idx) => (
-                <Card key={idx} className="bg-card/50 backdrop-blur-sm hover:scale-105 transition-transform cursor-pointer">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Icon name="Dumbbell" className="text-orange-500" size={20} />
-                      {workout.name}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Длительность</span>
-                      <span className="font-semibold">{workout.duration}</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Интенсивность</span>
-                      <Badge variant={workout.intensity === 'Высокая' ? 'destructive' : workout.intensity === 'Средняя' ? 'default' : 'secondary'}>
-                        {workout.intensity}
-                      </Badge>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Калории</span>
-                      <span className="font-semibold text-orange-500">~{workout.calories} ккал</span>
-                    </div>
-                    <Button className="w-full bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600">
-                      Начать тренировку
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
+
 
           <TabsContent value="nutrition" className="animate-fade-in">
             <Card className="bg-card/50 backdrop-blur-sm mb-6">
@@ -252,46 +198,7 @@ const Index = () => {
             </div>
           </TabsContent>
 
-          <TabsContent value="courses" className="animate-fade-in">
-            <Card className="bg-card/50 backdrop-blur-sm mb-6">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Icon name="GraduationCap" className="text-orange-500" />
-                  100 Курсов для трансформации
-                </CardTitle>
-              </CardHeader>
-            </Card>
 
-            <ScrollArea className="h-[600px] pr-4">
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {courses.map((course) => (
-                  <Card key={course.id} className="bg-card/50 backdrop-blur-sm hover:scale-105 transition-transform cursor-pointer">
-                    <CardHeader>
-                      <div className="flex items-start justify-between">
-                        <CardTitle className="text-base">{course.title}</CardTitle>
-                        <Badge variant="outline" className="bg-orange-500/10 text-orange-500 border-orange-500/50">
-                          #{course.id}
-                        </Badge>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-2">
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <Icon name="PlayCircle" size={16} />
-                        <span>{course.lessons} уроков</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <Icon name="Clock" size={16} />
-                        <span>{course.duration}</span>
-                      </div>
-                      <Button size="sm" className="w-full mt-2 bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600">
-                        Начать курс
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </ScrollArea>
-          </TabsContent>
 
           <TabsContent value="progress" className="animate-fade-in">
             <div className="grid md:grid-cols-2 gap-6">
@@ -377,57 +284,6 @@ const Index = () => {
                 </CardContent>
               </Card>
             </div>
-          </TabsContent>
-
-          <TabsContent value="coach" className="animate-fade-in">
-            <Card className="bg-card/50 backdrop-blur-sm">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Icon name="MessageCircle" className="text-orange-500" />
-                  Совет тренера
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex gap-4 p-4 bg-muted/30 rounded-lg">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 flex items-center justify-center flex-shrink-0">
-                    <Icon name="User" size={24} />
-                  </div>
-                  <div className="flex-1">
-                    <div className="font-semibold mb-1">Тренер Анна</div>
-                    <p className="text-sm text-muted-foreground">
-                      Отличный прогресс за первые 12 дней! Помни о важности восстановления — обязательно делай растяжку после каждой тренировки. Это поможет избежать травм и улучшит результаты.
-                    </p>
-                    <div className="text-xs text-muted-foreground mt-2">2 часа назад</div>
-                  </div>
-                </div>
-
-                <div className="flex gap-4 p-4 bg-muted/30 rounded-lg">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 flex items-center justify-center flex-shrink-0">
-                    <Icon name="User" size={24} />
-                  </div>
-                  <div className="flex-1">
-                    <div className="font-semibold mb-1">Тренер Анна</div>
-                    <p className="text-sm text-muted-foreground">
-                      Сегодня рекомендую увеличить количество белка в рационе. Попробуй добавить порцию творога в вечерний перекус — это поможет мышцам восстановиться после интенсивной тренировки.
-                    </p>
-                    <div className="text-xs text-muted-foreground mt-2">1 день назад</div>
-                  </div>
-                </div>
-
-                <div className="flex gap-4 p-4 bg-muted/30 rounded-lg">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 flex items-center justify-center flex-shrink-0">
-                    <Icon name="User" size={24} />
-                  </div>
-                  <div className="flex-1">
-                    <div className="font-semibold mb-1">Тренер Анна</div>
-                    <p className="text-sm text-muted-foreground">
-                      Не забывай пить достаточно воды! Особенно важно поддерживать водный баланс во время программы похудения. Минимум 2 литра в день.
-                    </p>
-                    <div className="text-xs text-muted-foreground mt-2">3 дня назад</div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
           </TabsContent>
 
           <TabsContent value="profile" className="animate-fade-in">
