@@ -1,0 +1,27 @@
+{
+  "tests": [
+    {
+      "name": "Create personalized plan",
+      "method": "POST",
+      "body": {
+        "motivation": "gain_form",
+        "gender": "female",
+        "diet": "regular",
+        "mealSchedule": "yes",
+        "workArea": ["abs", "legs"],
+        "height": 170,
+        "currentWeight": 70,
+        "targetWeight": 65,
+        "currentBody": 3,
+        "targetBody": 4
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "success": true,
+        "userId": "number",
+        "planId": "number"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}

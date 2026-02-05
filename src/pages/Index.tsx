@@ -25,7 +25,18 @@ const Index = () => {
 
 
   const handleOnboardingComplete = (data: any) => {
-    setUserData(data);
+    const bmi = data.currentWeight / ((data.height / 100) ** 2);
+    const weightDiff = data.currentWeight - data.targetWeight;
+    const baseCal = data.gender === 'female' ? 1800 : 2200;
+    const dailyCal = Math.round(baseCal - (Math.abs(weightDiff) * 7700 / 30));
+    
+    setUserData({
+      ...data,
+      bmi: bmi.toFixed(1),
+      dailyCalories: dailyCal,
+      daysCompleted: 0,
+      totalDays: 30
+    });
     setShowOnboarding(false);
   };
 
@@ -82,9 +93,9 @@ const Index = () => {
           <TabsContent value="home" className="space-y-6 animate-fade-in">
             <Card className="bg-gradient-to-r from-orange-500 to-pink-500 border-0 text-white">
               <CardContent className="p-6">
-                <h2 className="text-2xl font-bold mb-2">День 12 из 30</h2>
+                <h2 className="text-2xl font-bold mb-2">День {userData?.daysCompleted || 1} из {userData?.totalDays || 30}</h2>
                 <p className="text-white/90 mb-4">Ты на правильном пути! Продолжай в том же духе 💪</p>
-                <Progress value={40} className="h-3 bg-white/20" />
+                <Progress value={((userData?.daysCompleted || 1) / (userData?.totalDays || 30)) * 100} className="h-3 bg-white/20" />
               </CardContent>
             </Card>
 
@@ -92,22 +103,22 @@ const Index = () => {
               <Card className="bg-card/50 backdrop-blur-sm border-orange-500/20">
                 <CardContent className="p-6 text-center">
                   <Icon name="Flame" size={32} className="mx-auto mb-2 text-orange-500" />
-                  <div className="text-3xl font-bold text-orange-500">1,850</div>
-                  <div className="text-sm text-muted-foreground">Калории сегодня</div>
+                  <div className="text-3xl font-bold text-orange-500">{userData?.dailyCalories || 1850}</div>
+                  <div className="text-sm text-muted-foreground">Дневная норма ккал</div>
                 </CardContent>
               </Card>
               <Card className="bg-card/50 backdrop-blur-sm border-pink-500/20">
                 <CardContent className="p-6 text-center">
                   <Icon name="Activity" size={32} className="mx-auto mb-2 text-pink-500" />
-                  <div className="text-3xl font-bold text-pink-500">-3.2 кг</div>
-                  <div className="text-sm text-muted-foreground">Прогресс веса</div>
+                  <div className="text-3xl font-bold text-pink-500">{userData?.currentWeight || 70} → {userData?.targetWeight || 65} кг</div>
+                  <div className="text-sm text-muted-foreground">Ваша цель</div>
                 </CardContent>
               </Card>
               <Card className="bg-card/50 backdrop-blur-sm border-blue-500/20">
                 <CardContent className="p-6 text-center">
-                  <Icon name="Trophy" size={32} className="mx-auto mb-2 text-blue-500" />
-                  <div className="text-3xl font-bold text-blue-500">12</div>
-                  <div className="text-sm text-muted-foreground">Дней подряд</div>
+                  <Icon name="User" size={32} className="mx-auto mb-2 text-blue-500" />
+                  <div className="text-3xl font-bold text-blue-500">ИМТ {userData?.bmi || '22.5'}</div>
+                  <div className="text-sm text-muted-foreground">Индекс массы тела</div>
                 </CardContent>
               </Card>
             </div>
@@ -294,8 +305,8 @@ const Index = () => {
                     <Icon name="User" size={48} />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold">Мария Иванова</h3>
-                    <p className="text-sm text-muted-foreground">maria@example.com</p>
+                    <h3 className="text-xl font-bold">Пользователь</h3>
+                    <p className="text-sm text-muted-foreground">{userData?.gender === 'female' ? 'Женщина' : 'Мужчина'}</p>
                   </div>
                   <Button className="w-full bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600">
                     Редактировать профиль
@@ -311,19 +322,19 @@ const Index = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="p-4 bg-muted/30 rounded-lg">
                       <div className="text-sm text-muted-foreground mb-1">Текущий вес</div>
-                      <div className="text-2xl font-bold text-orange-500">68.8 кг</div>
+                      <div className="text-2xl font-bold text-orange-500">{userData?.currentWeight || 70} кг</div>
                     </div>
                     <div className="p-4 bg-muted/30 rounded-lg">
                       <div className="text-sm text-muted-foreground mb-1">Целевой вес</div>
-                      <div className="text-2xl font-bold text-green-500">65 кг</div>
+                      <div className="text-2xl font-bold text-green-500">{userData?.targetWeight || 65} кг</div>
                     </div>
                     <div className="p-4 bg-muted/30 rounded-lg">
                       <div className="text-sm text-muted-foreground mb-1">Рост</div>
-                      <div className="text-2xl font-bold">168 см</div>
+                      <div className="text-2xl font-bold">{userData?.height || 170} см</div>
                     </div>
                     <div className="p-4 bg-muted/30 rounded-lg">
-                      <div className="text-sm text-muted-foreground mb-1">Возраст</div>
-                      <div className="text-2xl font-bold">28 лет</div>
+                      <div className="text-sm text-muted-foreground mb-1">ИМТ</div>
+                      <div className="text-2xl font-bold">{userData?.bmi || '22.5'}</div>
                     </div>
                   </div>
 

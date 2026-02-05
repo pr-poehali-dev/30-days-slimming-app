@@ -23,6 +23,7 @@ interface OnboardingFlowProps {
 
 const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
   const [step, setStep] = useState(0);
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState<OnboardingData>({
     motivation: '',
     gender: '',
@@ -54,7 +55,10 @@ const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
 
   const nextStep = () => {
     if (step === totalSteps - 1) {
-      onComplete(data);
+      setLoading(true);
+      setTimeout(() => {
+        onComplete(data);
+      }, 3500);
     } else {
       setStep(prev => prev + 1);
     }
@@ -121,6 +125,33 @@ const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
       </div>
     );
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-pink-50 flex items-center justify-center">
+        <div className="text-center space-y-8 animate-fade-in px-4">
+          <div className="relative w-40 h-40 mx-auto">
+            <div className="absolute inset-0 border-8 border-orange-200 rounded-full"></div>
+            <div className="absolute inset-0 border-8 border-transparent border-t-orange-500 border-r-pink-500 rounded-full animate-spin"></div>
+            <div className="absolute inset-4 border-8 border-transparent border-b-orange-400 rounded-full animate-spin" style={{ animationDirection: 'reverse', animationDuration: '1.5s' }}></div>
+          </div>
+          <div className="space-y-4">
+            <h2 className="text-4xl font-bold text-gray-900">
+              Анализируем ваши данные...
+            </h2>
+            <p className="text-xl text-gray-600 max-w-md mx-auto">
+              ИИ-тренер создаёт персональную программу тренировок и питания специально для вас
+            </p>
+            <div className="flex items-center justify-center gap-2 text-orange-500">
+              <div className="w-2 h-2 bg-orange-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+              <div className="w-2 h-2 bg-orange-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+              <div className="w-2 h-2 bg-orange-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
