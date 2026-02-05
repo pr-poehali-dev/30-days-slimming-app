@@ -6,10 +6,13 @@ import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import OnboardingFlow from '@/components/OnboardingFlow';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState('home');
   const [showVideo, setShowVideo] = useState(true);
+  const [showOnboarding, setShowOnboarding] = useState(true);
+  const [userData, setUserData] = useState<any>(null);
 
   const recipes = [
     { name: 'Овсянка с ягодами', calories: 320, protein: 12, carbs: 54, fat: 8, category: 'Завтрак' },
@@ -33,6 +36,15 @@ const Index = () => {
     lessons: Math.floor(Math.random() * 15) + 10,
     duration: `${Math.floor(Math.random() * 4) + 2} недели`,
   }));
+
+  const handleOnboardingComplete = (data: any) => {
+    setUserData(data);
+    setShowOnboarding(false);
+  };
+
+  if (showOnboarding) {
+    return <OnboardingFlow onComplete={handleOnboardingComplete} />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#1A1F2C] via-[#2A1F3D] to-[#1A1F2C]">
